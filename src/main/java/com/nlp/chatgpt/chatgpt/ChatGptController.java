@@ -19,10 +19,10 @@ public class ChatGptController
     @Autowired private ObjectMapper jsonMapper;
     @Autowired private OpenAiApiClient client;
 
-    private String chatWithGpt4(String message) throws Exception {
+    private String chatWithGpt3(String message) throws Exception {
         var completion = CompletionRequest.defaultWith(message);
         var postBodyJson = jsonMapper.writeValueAsString(completion);
-        var responseBody = client.postToOpenAiApi(postBodyJson, OpenAiApiClient.OpenAiService.GPT_4);
+        var responseBody = client.postToOpenAiApi(postBodyJson, OpenAiApiClient.OpenAiService.GPT_3);
         var completionResponse = jsonMapper.readValue(responseBody, CompletionResponse.class);
         return completionResponse.firstAnswer().orElseThrow();
     }
@@ -36,7 +36,7 @@ public class ChatGptController
     public String chat(Model model, @ModelAttribute FormInputDTO dto) {
         try {
             model.addAttribute("request", dto.prompt());
-            model.addAttribute("response", chatWithGpt4(dto.prompt()));
+            model.addAttribute("response", chatWithGpt3(dto.prompt()));
         } catch (Exception e) {
             model.addAttribute("response", "Error in communication with OpenAI ChatGPT API.");
         }
