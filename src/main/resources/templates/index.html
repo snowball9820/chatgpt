@@ -21,8 +21,10 @@
         </div>
       </fieldset>
     </form>
-    <h2 th:if="${response != null}" >시나리오 </h2>
-    <p th:if="${response != null}" th:text="${response}" />
+    <h2 th:if="${scenario != null}">생성된 시나리오</h2>
+    <p th:if="${scenario != null}" th:text="${scenario}"></p>
+    <h2 th:if="${imageUri != null}">생성된 이미지</h2>
+    <img th:if="${imageUri != null}" th:src="${imageUri}" alt="Generated Image" />
   </div>
 </main>
 </body>
