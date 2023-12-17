@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nlp.chatgpt.FormInputDTO;
 import com.nlp.chatgpt.OpenAiApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +51,7 @@ public class ChatGptController
         if (images != null && !images.isEmpty()) {
             return (String) images.get(0).get("url");
         }
-        throw new RuntimeException("No image URL found in response");
+        throw new RuntimeException("image URL 응답을 찾을 수 없음");
     }
 
     // DALL-E API를 호출하는 메소드 추가
@@ -69,6 +72,7 @@ public class ChatGptController
     }
 
     // Chat 메소드 수정
+
     @PostMapping(path = "/")
     public String chat(Model model, @ModelAttribute FormInputDTO dto) {
         try {
@@ -80,11 +84,37 @@ public class ChatGptController
                 String imageUri = generateImage(dto.prompt());
                 model.addAttribute("imageUri", imageUri);
             } catch (JsonProcessingException e) {
-                model.addAttribute("error", "Error processing JSON for image generation.");
+                model.addAttribute("error", "이미지 생성을 위해 JSON을 처리하는 중 오류가 발생");
             }
         } catch (Exception e) {
-            model.addAttribute("error", "Error in communication with OpenAI ChatGPT API.");
+            model.addAttribute("error", "OpenAI ChatGPT API와 통신하는 중 오류가 발생");
         }
         return MAIN_PAGE;
     }
+
+//    //postman 확인용 코드
+//    @ResponseBody
+//    @PostMapping(path = "/")
+//    public ResponseEntity<Map<String, Object>> chat(@ModelAttribute FormInputDTO dto) {
+//        Map<String, Object> responseMap = new HashMap<>();
+//        try {
+//            String scenario = chatWithGpt3(dto.prompt());
+//            responseMap.put("scenario", scenario);
+//
+//            try {
+//                String imageUri = generateImage(dto.prompt());
+//                responseMap.put("imageUri", imageUri);
+//            } catch (JsonProcessingException e) {
+//                // JSON 처리 오류를 응답 맵에 추가
+//                responseMap.put("error", "이미지 생성을 위해 JSON을 처리하는 중 오류가 발생");
+//                return ResponseEntity.badRequest().body(responseMap);
+//            }
+//        } catch (Exception e) {
+//            // OpenAI API 통신 오류를 응답 맵에 추가
+//            responseMap.put("error", "OpenAI ChatGPT API와 통신하는 중 오류가 발생");
+//            return ResponseEntity.badRequest().body(responseMap);
+//        }
+//        return ResponseEntity.ok(responseMap);
+//    }
+
 }
