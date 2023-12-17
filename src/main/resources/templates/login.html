@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+</head>
+<body>
+<h1>로그인</h1>
+<!-- th:object를 추가해 폼과 모델 객체를 연결합니다. -->
+<form th:action="@{/login}" th:object="${user}" method="post">
+    <table>
+        <tr>
+            <td>아이디:</td>
+            <td><input type="text" th:field="*{username}" /></td>
+        </tr>
+        <tr>
+            <td>비밀번호:</td>
+            <td><input type="password" th:field="*{password}" /></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="로그인" /></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

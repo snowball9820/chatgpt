@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원목록</title>
+</head>
+<body>
+<h1>회원목록</h1>
+<table>
+    <thead>
+    <tr>
+        <th>아이디</th>
+        <th>비밀번호</th>
+        <th>이름</th>
+        <th>핸드폰 번호</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf의 th:each를 사용하여 userList 컬렉션을 반복 처리합니다. -->
+    <tr th:each="user : ${userList}">
+        <td th:text="${user.username}">아이디</td>
+        <td th:text="${user.password}">비밀번호</td>
+        <td th:text="${user.fullName}">이름</td>
+        <td th:text="${user.phoneNumber}">핸드폰 번호</td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/home}">홈페이지 이동</a>
+</body>
+</html>
